@@ -91,12 +91,37 @@ saveRDS(dt, file = file.path(system.file(package = "orgdata"), "testdata","dt-re
 saveRDS(dt, file = file.path(system.file(package = "orgdata"), "testdata/dt-recode-agg.rds"))
 testdt <- readRDS(file = system.file("testdata", "dt-test.rds", package = "orgdata"))
 
-
 ## Tinytest approach
 ## tinytest::setup_tinytest(getwd())
 ## tinytest::test_all(getwd()) # run all test files
 ## run_test_file("testfile.R")
+       
+## COV ----------------------------
+usethis::use_coverage()
+usethis::use_github_action("test-coverage")
+covr::report()    
 
+## In Windows. Unload package first
+## renv::install("DT")
+library(covr)
+setwd(dir = "c:/Users/ybka/Git-fhi/orgdata")
+pkg <- covr::package_coverage(path = getwd())
+covr::report(pkg)
+
+devtools::install()
+
+## API testing ------------------------
+vcr::use_vcr()
+# vcr::use_cassette("get-code")
+# vcr::use_cassette("get-correspond")
+
+## Use CI -------------------------------------------
+usethis::use_git_remote("origin", url = "https://github.com/helseprofil/orgdata.git", overwrite = TRUE)
+usethis::use_github_action_check_standard()
+usethis::use_git_remote("origin", url = "git@work:helseprofil/orgdata.git", overwrite = TRUE)
+
+usethis::use_lifecycle()
+usethis::use_lifecycle_badge(stage = "experimental")
 
 ## Add packages ----------------------------------
 usethis::use_package("renv", "Suggests")
@@ -133,33 +158,6 @@ pkgdown::build_news(preview = TRUE)
 
 usethis::use_logo("C:/Users/ybka/Pictures/logo.png", geometry = "220x258", retina = TRUE)
 pkgdown::build_favicons(pkg = ".")
-
-## Use CI -------------------------------------------
-usethis::use_git_remote("origin", url = "https://github.com/helseprofil/orgdata.git", overwrite = TRUE)
-usethis::use_github_action_check_standard()
-usethis::use_git_remote("origin", url = "git@work:helseprofil/orgdata.git", overwrite = TRUE)
-
-usethis::use_lifecycle()
-usethis::use_lifecycle_badge(stage = "experimental")
-
-
-## COV ----------------------------
-## usethis::use_coverage()
-## usethis::use_github_action("test-coverage")
-
-## In Windows. Unload package first
-## renv::install("DT")
-library(covr)
-setwd(dir = "c:/Users/ybka/Git-fhi/orgdata")
-pkg <- covr::package_coverage(path = getwd())
-covr::report(pkg)
-
-devtools::install()
-
-## API testing ------------------------
-vcr::use_vcr()
-# vcr::use_cassette("get-code")
-# vcr::use_cassette("get-correspond")
 
 ## ADD BADGER ---------------
 remotes::install_github("GuangchuangYu/badger")
