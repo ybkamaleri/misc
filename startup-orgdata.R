@@ -85,7 +85,10 @@ usethis::use_test("specification")
 usethis::use_test("check")
 usethis::use_test("see-org")
 
+## Save and read RDS files
 saveRDS(dt, file = file.path(system.file(package = "orgdata"), "testdata","dt-recode-agg.rds"))
+# or
+saveRDS(dt, file = file.path(system.file(package = "orgdata"), "testdata/dt-recode-agg.rds"))
 testdt <- readRDS(file = system.file("testdata", "dt-test.rds", package = "orgdata"))
 
 
@@ -127,7 +130,9 @@ pkgdown::build_site()
 pkgdown::preview_site()
 pkgdown::build_news()
 pkgdown::build_news(preview = TRUE)
+
 usethis::use_logo("C:/Users/ybka/Pictures/logo.png", geometry = "220x258", retina = TRUE)
+pkgdown::build_favicons(pkg = ".")
 
 ## Use CI -------------------------------------------
 usethis::use_git_remote("origin", url = "https://github.com/helseprofil/orgdata.git", overwrite = TRUE)
@@ -151,6 +156,10 @@ covr::report(pkg)
 
 devtools::install()
 
+## API testing ------------------------
+vcr::use_vcr()
+# vcr::use_cassette("get-code")
+# vcr::use_cassette("get-correspond")
 
 ## ADD BADGER ---------------
 remotes::install_github("GuangchuangYu/badger")
@@ -159,3 +168,10 @@ library(badger)
 remotes::install_github("FRBCesab/rcompendium")
 library(rcompendium)
 add_codecov_badge()
+
+## CRAN release ---------------------
+devtools::build() #create .tar.gz file
+devtools::spell_check()
+devtools::release_checks()
+devtools::release()
+devtools::check_rhub()
