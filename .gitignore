@@ -15,5 +15,5 @@ yarn-error.log*
 *.fls
 *.aux
 *.fls
-*.fls_latexmk
+*.fdb_latexmk
 *.gz
